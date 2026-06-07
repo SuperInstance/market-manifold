@@ -1,0 +1,165 @@
+# ======================================================================
+# Agent Onboarding Portal Configuration
+# ======================================================================
+# This config file controls how the Market Manifold fleet onboarding
+# system behaves. It's read by the CI/CD promotion pipelines and the
+# baton system tools.
+#
+# Version: 1.0.0
+# ======================================================================
+
+# ── Fleet Identity ──────────────────────────────────────────────────
+fleet:
+  name: Market Manifold
+  registry_url: https://registry.manifold.dev
+  github_org: SuperInstance
+  github_repo: market-manifold
+  pincher_repo: pincher
+  protocol_version: "2.0"
+
+# ── Promotion Thresholds ────────────────────────────────────────────
+promotion:
+  l3:
+    name: "Operational Reflex Competence"
+    gates:
+      reflex_coverage:
+        weight: 0.25
+        threshold: 0.80
+        hard_blocker: false
+      latency:
+        weight: 0.25
+        threshold: 0.80
+        target_avg_ms: 50
+        target_p95_ms: 80
+        target_hit_rate: 0.85
+        hard_blocker: false
+      baton_protocol:
+        weight: 0.20
+        threshold: 0.80
+        compliance_checks: 6
+        hard_blocker: false
+      sandbox_integrity:
+        weight: 0.15
+        threshold: 1.0
+        hard_blocker: true
+      self_assessment:
+        weight: 0.15
+        threshold: 0.70
+        hard_blocker: false
+    overall_threshold: 0.80
+    timeout_minutes: 60
+    auto_deploy: false
+    commit_results: true
+
+  l4:
+    name: "Strategic Reflex Competence"
+    prerequisites:
+      min_splines_written: 3
+      min_cross_room_handoffs: 5
+      min_l3_epochs: 1
+      adversarial_history_clean: true
+    phases:
+      reflex_design:
+        weight: 0.25
+        threshold: 0.70
+        min_reflexes_designed: 3
+      multi_agent_coordination:
+        weight: 0.25
+        threshold: 0.70
+        min_handoffs: 20
+      spline_distillation:
+        weight: 0.20
+        threshold: 0.65
+      teaching:
+        weight: 0.15
+        threshold: 0.65
+      adversarial_resilience:
+        weight: 0.15
+        threshold: 0.65
+    overall_threshold: 0.75
+    timeout_minutes: 120
+
+# ── Gauntlet Profiles ──────────────────────────────────────────────
+gauntlet_profiles:
+  standard:
+    description: "Standard promotion run — all gates, default weights"
+    duration_minutes: 30
+    includes_reflex_design: false
+    includes_adversarial: false
+  accelerated:
+    description: "Re-test after fixing gaps — subset of gates"
+    duration_minutes: 15
+    includes_reflex_design: false
+    includes_adversarial: false
+    gated_only: true
+  adversarial:
+    description: "Full gauntlet with adversarial attack surface testing"
+    duration_minutes: 45
+    includes_reflex_design: true
+    includes_adversarial: true
+    attack_vectors:
+      - prompt_injection
+      - reflex_poisoning
+      - sandbox_escape
+      - protocol_spoofing
+  full:
+    description: "Complete promotion run — all phases, in-depth analysis"
+    duration_minutes: 120
+    includes_reflex_design: true
+    includes_adversarial: true
+    includes_teaching: true
+
+# ── Retry Policy ────────────────────────────────────────────────────
+retry:
+  attempts:
+    - attempt: 1
+      cooldown_minutes: 0
+      profile: standard
+    - attempt: 2
+      cooldown_minutes: 60
+      profile: accelerated
+    - attempt: 3
+      cooldown_minutes: 360
+      profile: accelerated
+    - attempt: 4
+      cooldown_minutes: 1440
+      profile: standard
+
+# ── I2I Vessel ──────────────────────────────────────────────────────
+i2i_vessel:
+  path: /tmp/i2i-vessel
+  bottles_dir: bottles
+  harbor_dir: harbor
+  splines_dir: splines
+  archive_path: "${WORKSPACE}/baton-system/handoffs"
+
+# ── Services ────────────────────────────────────────────────────────
+services:
+  deepinfra:
+    model: deepseek-ai/DeepSeek-V4-Flash
+    fallback_models:
+      - deepseek-ai/DeepSeek-V3
+    api_url: https://api.deepinfra.com/v1
+  openai:
+    model: gpt-4o
+  pincher:
+    reflex_db: COGNITIVE_REFLEXES.md
+    nail_output: ./dist/
+    nail_format_version: "1.0"
+
+# ── Notifications ──────────────────────────────────────────────────
+notifications:
+  on_promotion:
+    - type: baton
+      target: harbor
+      format: I2I:PROMOTE
+    - type: summary
+      target: github_step_summary
+  on_deferral:
+    - type: baton
+      target: harbor
+      format: I2I:BLOCKER
+    - type: gap_analysis
+      target: artifact
+    - type: spline
+      target: archive
