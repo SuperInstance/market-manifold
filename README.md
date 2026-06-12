@@ -1,11 +1,63 @@
 # 🌐 Market Manifold
 
-**Financial analysis as a topological navigation problem.**  
-Transform stock markets from a flat list of tickers into a navigable, ternary-valued manifold.
+> 🚀 **The Hook:**  
+> *Financial analysis as a topological navigation problem — transform stock markets from a flat list of tickers into a navigable, ternary-valued manifold where topology reveals what prices hide.*
 
 ---
 
-## The Essence
+## 📐 The la-link (Architecture at a Glance)
+
+```
+                         ┌─────────────────────────────────────┐
+                         │        MARKET MANIFOLD             │
+                         │                                     │
+  Raw Data ──▶ ┌─────────┴──────────┐                         │
+  (price,     │    Stock Rooms     │                         │
+   volume,    │  ┌────────────────┐│                         │
+   sentiment) │  │ Ternary Maps   ││                         │
+               │  │ {+1, 0, -1}   ││                         │
+               │  └────────┬───────┘│                         │
+               └──────────┼────────┘                         │
+                          │                                   │
+                          ▼                                   │
+               ┌─────────────────────────┐                    │
+               │  Topological Observatory │                    │
+               │  (Persistent Homology)   │                    │
+               │  β₀ β₁ β₂ → Fingerprint  │                    │
+               └──────────┬──────────────┘                    │
+                          │                                   │
+                          ▼                                   │
+               ┌─────────────────────────┐                    │
+               │  Pincher Reflex Engine   │                    │
+               │  (The Spinal Cord)       │                    │
+               │  Match → Execute → Learn │                    │
+               └──────────┬──────────────┘                    │
+                          │                                   │
+                          ▼                                   │
+               ┌─────────────────────────┐                    │
+               │  SAEP Veto Engine       │                    │
+               │  Room → Sector → Port.  │                    │
+               └──────────┬──────────────┘                    │
+                          │                                   │
+                          ▼                                   │
+               ┌─────────────────────────┐                    │
+               │  Fleet Coordination    │                    │
+               │  (I2I Batons + Splines) │                    │
+               └─────────────────────────┘                    │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Three-tier compute:**
+
+```
+Fast  (tick):  Ternary map updates (raw → {+1,0,−1})
+Medium (6h):   Topological observatory (persistence homology)
+Slow   (event): Fleet coordination + spline distillation
+```
+
+---
+
+## 🧠 The Essence
 
 Markets are not lists. Every time you open a spreadsheet of tickers with columns for price, PE ratio, volume — you are looking at a **flat projection** of a deeply structured, curved space. The relationships between stocks — sector correlations, volatility clustering, regime shifts, lead-lag dynamics — are not metadata. They are the **topology of the manifold**.
 
@@ -15,7 +67,7 @@ Market Manifold is a framework for treating financial analysis as a **navigation
 
 ---
 
-## The Problem: Why Lists Fail
+## 🤔 The Problem: Why Lists Fail
 
 ### A stock is not a row in a spreadsheet
 
@@ -40,7 +92,7 @@ The output is not a price target. It is a **position in the ternary action space
 
 ---
 
-## Architecture Overview
+## 🏗️ Architecture Overview
 
 ```
                          ┌──────────────────┐
@@ -87,7 +139,7 @@ The output is not a price target. It is a **position in the ternary action space
 
 ---
 
-## How It Works: A Walkthrough
+## 🔄 How It Works: A Walkthrough
 
 ### 1. A Stock Room Is Born
 
@@ -191,7 +243,7 @@ Splines are shared across the fleet via I2I batons. A spline learned on `$AAPL` 
 
 ---
 
-## Topology of Value: A Deeper View
+## 📐 Topology of Value: A Deeper View
 
 See [Topology of Value](./docs/TOPOLOGY-OF-VALUE.md) for the full treatment.
 
@@ -208,7 +260,7 @@ For a fully worked example with `$AAPL`, `$MSFT`, and `$GOOGL` in the same secto
 
 ---
 
-## Onboarding: Room Managers
+## 🎒 Onboarding: Room Managers
 
 New agents joining Market Manifold should follow the [Stock Room Manager Onboarding Guide](./onboarding/STOCK-ROOM-MANAGER.md).
 
@@ -221,7 +273,7 @@ The guide covers:
 
 ---
 
-## Symmetry Principles
+## 🔄 Symmetry Principles
 
 Market Manifold is designed with four symmetries that make it **self-consistent, composable, and provably structured**:
 
@@ -243,7 +295,7 @@ When the analysis is distilled into a spline, the essential topological informat
 
 ---
 
-## Fleet Coordination
+## 📡 Fleet Coordination
 
 Market Manifold uses the [I2I Baton Protocol](../../baton-system/PROTOCOL.md) for all cross-room communication:
 
@@ -275,16 +327,16 @@ All batons flow through the I2I vessel at `/tmp/i2i-vessel/`:
 
 ---
 
-## Getting Started
+## 🛠️ Getting Started
 
-### Prerequisites
+### 📋 Prerequisites
 
 - Rust 2024+ toolchain
 - `pincher` CLI installed (see [pincher README](../../pincher/README.md))
 - I2I baton agent active (`baton-create` script available)
 - Access to the SuperInstance fleet (Cloudflare Worker `nebula` for edge reflexes)
 
-### Quick Start
+### 🚀 Quick Start
 
 ```bash
 # 1. Clone the framework
@@ -307,7 +359,7 @@ pincher teach --room AAPL --intent "regime-shift-detection"
 ./bin/join-fleet --rooms AAPL,MSFT,GOOGL
 ```
 
-### From First Principles
+### 📚 From First Principles
 
 For those who want to understand the mathematics before running code, start with:
 
@@ -318,7 +370,7 @@ For those who want to understand the mathematics before running code, start with
 
 ---
 
-## Ecosystem Position
+## 🔌 Ecosystem Position
 
 Market Manifold sits at the intersection of three SuperInstance domains:
 
@@ -349,7 +401,7 @@ Market Manifold sits at the intersection of three SuperInstance domains:
 └────────────────────────────────────────────────────────┘
 ```
 
-### Related Projects
+### 🔗 Related Projects
 
 - **constraint-theory-core** — Pythagorean manifold snapping for exact geometry
 - **pincher** — The reflex runtime that powers every stock room
@@ -361,13 +413,25 @@ Market Manifold sits at the intersection of three SuperInstance domains:
 
 ---
 
-## License
+## 📚 Knowledge Path
+
+| Path | What You'll Learn | Start Here |
+|------|-------------------|------------|
+| 🧭 **A: Room Setup** | Create a stock room, run maps | [`TUTORIALS.md`](./TUTORIALS.md#-tutorial-1-i-want-to-set-up-a-single-stock-room) |
+| 🧭 **B: Topology Reading** | Understand Betti numbers, persistence | [`docs/TOPOLOGY-OF-VALUE.md`](./docs/TOPOLOGY-OF-VALUE.md) |
+| 🧭 **C: Reflex Training** | Teach your room reflexes | [`TUTORIALS.md`](./TUTORIALS.md#-tutorial-3-i-want-to-train-a-room-reflex) |
+| 🧭 **D: Fleet Integration** | Connect rooms, share splines | [`docs/FLEET-COORDINATION.md`](./docs/FLEET-COORDINATION.md) |
+| 🧭 **E: Spline Distillation** | Create portable insights | [`docs/SPLINE-EXAMPLES.md`](./docs/SPLINE-EXAMPLES.md) |
+| 🧭 **F: SAEP Governance** | Veto layers for risk | [`onboarding/STOCK-ROOM-MANAGER.md`](./onboarding/STOCK-ROOM-MANAGER.md) |
+| 🧭 **G: Onboarding Plan** | Day-by-day engineer path | [`TEMPLATES/ONBOARDING.md`](./TEMPLATES/ONBOARDING.md) |
+
+## 📄 License
 
 MIT OR Apache-2.0 — see LICENSE.
 
 ---
 
-## The Crab and the Coral
+## 🦀 The Crab and the Coral
 
 > *A hermit crab doesn't try to carry the whole ocean. It finds a shell, grows into it, and when the shell is outgrown, it finds a larger one.*
 >

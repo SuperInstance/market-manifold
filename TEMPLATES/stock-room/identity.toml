@@ -1,0 +1,25 @@
+# ════════════════════════════════════════════════════════
+# Stock Room Identity Template
+# ════════════════════════════════════════════════════════
+
+[ticker]
+symbol = "EXAMPLE"
+name = "Example Corp"
+sector = "Technology"
+industry = "Software"
+exchange = "NASDAQ"
+
+[room]
+version = "1.0"
+created = "2026-06-07"
+manager = "agent-name"
+
+[maps]
+technical = true
+fundamental = true
+sentiment = true
+
+[topology]
+dimensions = "0:2"
+persistence_threshold = 0.3
+time_window_days = 90
